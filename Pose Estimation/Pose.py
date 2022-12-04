@@ -21,7 +21,7 @@ while True:
             h, w, c = img.shape
             cx, cy = int(lm.x*w), int(lm.y*h)
             cv2.circle(img, (cx,cy), 2, (255, 0, 0), cv2.FILLED)
-
+            
 
     cTime = time.time()
     fps = 1/ (cTime - pTime)
