@@ -42,7 +42,7 @@ class poseDetector():
 
 
 def main():
-    cap =cv2.VideoCapture('/home/arvind/Desktop/openCVProject-env/Pose Estimation/videos/2.mp4', )
+    cap =cv2.VideoCapture('/home/arvind/Desktop/openCVProject-env/Pose Estimation/videos/6.mp4', )
     pTime = 0
     detector = poseDetector()
     while True:
