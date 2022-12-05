@@ -27,7 +27,7 @@ class handDetector():
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
         return img    
 
-    def findPosition(self, img, keyPoint=None, handNo=0):
+    def findPosition(self, img, keyPoint=None, handNo=0, allVal=False):
         lmList = []
         if self.results.multi_hand_landmarks:
             myHand = self.results.multi_hand_landmarks[handNo]
@@ -38,10 +38,10 @@ class handDetector():
                 lmList.append([id, cx, cy])
             if keyPoint != None:
                 print(lmList[keyPoint])
-                cv2.circle(img, (lmList[keyPoint][1], lmList[keyPoint][2]), 12, (255, 0, 230), cv2.FILLED)
-            if keyPoint == None:
+                cv2.circle(img, (lmList[keyPoint][1], lmList[keyPoint][2]), 5, (255, 0, 0), cv2.FILLED)
+            if allVal:
                 print(lmList)
-
+        return lmList
     # def ParticularKey(self, img, keyPoint=0):
     #     while len(self.lmList) != 0:
     #         print(self.lmList[keyPoint])
