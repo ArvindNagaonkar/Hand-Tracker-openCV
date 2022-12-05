@@ -14,6 +14,7 @@ class handDetector():
         self.mpHands = mp.solutions.hands
         self.hands = self.mpHands.Hands(self.mode, self.maxHands, self.model_complexity,self.detectionCon, self.trackCon)
         self.mpDraw = mp.solutions.drawing_utils
+        self.tipIds = [4, 8, 12, 16, 20]
 
     def findHands(self, img, draw = True):
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -28,24 +29,36 @@ class handDetector():
         return img    
 
     def findPosition(self, img, keyPoint=None, handNo=0, allVal=False):
-        lmList = []
+        self.lmList = []
         if self.results.multi_hand_landmarks:
             myHand = self.results.multi_hand_landmarks[handNo]
             for id, lm in enumerate(myHand.landmark):
                 # print(id,lm)
                 h, w, c = img.shape
                 cx, cy = int(lm.x*w), int(lm.y*h)
-                lmList.append([id, cx, cy])
+                self.lmList.append([id, cx, cy])
             if keyPoint != None:
-                print(lmList[keyPoint])
-                cv2.circle(img, (lmList[keyPoint][1], lmList[keyPoint][2]), 5, (255, 0, 0), cv2.FILLED)
+                print(self.lmList[keyPoint])
+                cv2.circle(img, (self.lmList[keyPoint][1], self.lmList[keyPoint][2]), 5, (255, 0, 0), cv2.FILLED)
             if allVal:
-                print(lmList)
-        return lmList
-    # def ParticularKey(self, img, keyPoint=0):
-    #     while len(self.lmList) != 0:
-    #         print(self.lmList[keyPoint])
-    #         cv2.circle(img, (self.cx, self.cy), 12, (255, 0, 230), cv2.FILLED)
+                print(self.lmList)
+        return self.lmList
+    
+    def fingersUp(self):
+        fingers = []
+        #Thumb 
+        if self.lmList[self.tipIds[0]][1] < self.lmList[self.tipIds[0] - 1][1]:
+            fingers.append(1)
+        else:
+            fingers.append(0)
+        
+        # 4 fingers
+        for id in range(1, 5):
+            if self.lmList[self.tipIds[id]][2] < self.lmList[self.tipIds[id] - 2][2]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+        return fingers
 
 def main():
     pTime = 0
